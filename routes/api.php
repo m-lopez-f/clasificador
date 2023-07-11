@@ -12,11 +12,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::get('/dogs/list', 'DogController@index');
 Route::get('images/{name}', function ($name) {
     return response()->file(storage_path('app/public/images/'.$name));
 });
-Route::post('/dogs/add', 'DogController@store');
-Route::get('dogs/details/{dogID}', 'DogController@one');
-Route::post('dogs/filter', 'DogController@filter');
+
+Route::group(['prefix' => 'dogs'], function () {
+    Route::post('filter', 'DogController@filter');
+    Route::get('details/{dogID}', 'DogController@one');
+    Route::post('add', 'DogController@store');
+    Route::get('list', 'DogController@index');
+});
